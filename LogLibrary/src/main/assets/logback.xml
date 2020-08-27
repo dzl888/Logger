@@ -1,0 +1,86 @@
+<configuration>
+
+<!--    <timestamp key="date" datePattern="yyyy_MM_dd" />
+
+    <appender name="logcat" class="ch.qos.logback.classic.android.LogcatAppender">
+        <tagEncoder>
+            <pattern>%logger{12}</pattern>
+        </tagEncoder>
+        <encoder>
+            <pattern>[%-20thread] %msg</pattern>
+        </encoder>
+    </appender>-->
+
+    <!--<appender name="file" class="ch.qos.logback.core.FileAppender">
+        <file>/data/data/com.even.app.logbackdemo/files/log/log_${date}.txt</file>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>-->
+
+    <property name="LOG_DIR" value="/data/data/com.example/files" />
+
+    <!--当Logback运行起来后创建了日志文件，如果此时手动删除，则Logback不会再创建文件出来了，写日志也就写不到了，除非杀进程重启才行-->
+
+    <!--用于保存运行日志的Appender配置-->
+    <appender name="FILE_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <!--过滤：不要ERROR级别，其它级别都要-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>DENY</onMatch>
+            <onMismatch>ACCEPT</onMismatch>
+        </filter>
+
+        <!--当天的日志用log.txt命令，第二天的时候会把昨天的日志改为log_2020_08_19.txt-->
+        <!--${EXT_DIR}获取到值为：/storage/emulated/0，等同于/sdcard，说明/sdcard其实只是一个虚拟目录名-->
+        <!--${DATA_DIR}获取到值为：/data/data/应用包名/files-->
+        <!--PACKAGE_NAME 应用包名-->
+        <!--好像写数据到/sdcard/Android/data/应用包名目录下是不需要权限，但是实验证明需要写外部存储权限才可以-->
+        <file>${EXT_DIR}/Android/data/${PACKAGE_NAME}/files/Documents/logs/log.txt</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 按天轮转 -->
+            <fileNamePattern>${EXT_DIR}/Android/data/${PACKAGE_NAME}/files/Documents/logs/log_%d{yyyy_MM_dd}.txt</fileNamePattern>
+            <!-- 保存 7 天的历史记录(7天后会删除最老的日志文件)，最大大小为 300M -->
+            <maxHistory>7</maxHistory>
+            <totalSizeCap>300MB</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder>
+            <!--
+            %d{HH:mm:ss}    时间：12:06:35
+            [%thread]       线程：[main]
+            %-5level        等级：INFO  （长度为5位，不够的补空格）
+            %msg            日志内容
+            %n              换行
+            -->
+            <pattern>%d{HH:mm:ss} [%thread] %-5level %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--用于保存Bug的Appender配置-->
+    <appender name="FILE_BUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <!-- 过虑掉小于ERROR级别的日志，所有级别: TRACE < DEBUG < INFO < WARN < ERROR -->
+            <level>ERROR</level>
+        </filter>
+
+        <file>${EXT_DIR}/Android/data/${PACKAGE_NAME}/files/Documents/bugs/bug.txt</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${EXT_DIR}/Android/data/${PACKAGE_NAME}/files/Documents/bugs/bug_%d{yyyy_MM_dd}.txt</fileNamePattern>
+            <maxHistory>7</maxHistory>
+            <totalSizeCap>300MB</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{HH:mm:ss} [%thread] %-5level %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="trace">
+        <!--<appender-ref ref="logcat" />-->
+        <appender-ref ref="FILE_LOG"/>
+        <appender-ref ref="FILE_BUG"/>
+    </root>
+
+</configuration>
