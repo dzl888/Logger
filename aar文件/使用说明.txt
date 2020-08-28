@@ -1,0 +1,7 @@
+
+    // Logback 功能很强大的日志库
+    api 'org.slf4j:slf4j-api:1.7.30' // 官方用的是1.7.25，不知道使用最新版本（1.7.30）会不会有问题
+    api 'com.github.tony19:logback-android:2.0.0'
+
+    // 用于保存配置文件
+    api 'androidx.preference:preference:1.1.1'
