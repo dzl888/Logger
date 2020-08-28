@@ -9,10 +9,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Timber.plantDefaultTree(application)
+        Timber.init(application)
     }
 
     fun printLog(view: View) {
-        Timber.fe(Exception("新异常"), "开心哈")
+        Timber.fe(Exception("哎，又想看直播了"), "为什么会这样呢？")
     }
 }

@@ -604,7 +604,7 @@ class Timber private constructor() {
          * 植入一棵默认的Tree。在使用Timer记录日志之前，必须先植入一棵树。也可调用[Timber.plant]来植入其它的树
          * @param context 用于获取保存配置的对象（SharedPreferences）
          */
-        fun plantDefaultTree(context: Application) {
+        fun init(context: Application) {
             defaultTree = DefaultTree()
             defaultTree!!.init(context)
             plant(defaultTree!!)

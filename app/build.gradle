@@ -34,7 +34,7 @@ dependencies {
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation 'cn.dazhou.android.log:timber:0.0.2'
+    implementation 'cn.dazhou.android.log:timber:0.0.3'
 
     // Logback 功能很强大的日志库
     //api 'org.slf4j:slf4j-api:1.7.30' // 官方用的是1.7.25，不知道使用最新版本（1.7.30）会不会有问题
