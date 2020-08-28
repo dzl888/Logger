@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'maven'
 
 android {
     compileSdkVersion 30
@@ -22,111 +23,35 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    api fileTree(dir: "libs", include: ["*.jar"])
+    api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     // Logback 功能很强大的日志库
-    implementation 'org.slf4j:slf4j-api:1.7.30' // 官方用的是1.7.25，不知道使用最新版本（1.7.30）会不会有问题
-    implementation 'com.github.tony19:logback-android:2.0.0'
+    api 'org.slf4j:slf4j-api:1.7.30' // 官方用的是1.7.25，不知道使用最新版本（1.7.30）会不会有问题
+    api 'com.github.tony19:logback-android:2.0.0'
 
     // 用于保存配置文件
-    implementation 'androidx.preference:preference:1.1.1'
+    api 'androidx.preference:preference:1.1.1'
 }
 
-/**=====================在最后边添加==========================================================*/
-apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jfrog.bintray'
-version = "1.0.0"    //版本号，以后每次更新library都得更改
-def siteUrl = 'https://github.com/dzl888'    //Homepage URL of the library
-def gitUrl = 'https://github.com/dzl888/TimberLibrary.git'    //Git repository url
-def issueUrl = 'https://github.com/dzl888/TimberLibrary/issues'    //issue url of the library
-def linksUrl = 'https://github.com/dzl888/TimberLibrary/wiki'//links url of the
-library
-/*=====(路径可以是假的)======*/
-group = "com.hongyelinggu"    //组织
-install {
-    repositories.mavenInstaller {
-        // This generates POM.xml with proper parameters
-        pom {
-            project {
-                packaging 'aar'
-                // Add your description here
-                name '介绍'
-                url siteUrl
-                // Set your license
-                licenses {
-                    license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-                developers {
-                    developer {
-                        id '******' //your user ID
-                        name '******' //your name
-                        email '******' //your email
-                    }
-                }
-                scm {
-                    connection gitUrl
-                    developerConnection gitUrl
-                    url siteUrl
-                }
+//配置远程maven仓库
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            pom.groupId = "cn.dazhou.android.log"
+            pom.artifactId = "timber"
+            pom.version = "0.0.2"
+            repository(url: "http://192.168.1.251:8081/content/repositories/android_repositories/") {
+                authentication(userName: "dazhou", password: "dazhou")
             }
         }
-    }
-}
-//生成源文件
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-//生成文档
-task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    options.encoding "UTF-8"
-    options.charSet 'UTF-8'
-    options.author true
-    options.version true
-    options.links linksUrl
-    failOnError false
-}
-//文档打包成jar
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-//拷贝javadoc文件
-task copyDoc(type: Copy) {
-    from "${buildDir}/docs/"
-    into "docs"
-}
-
-//上传到jcenter所需要的源码文件
-artifacts {
-    archives javadocJar
-    archives sourcesJar
-}
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
-    configurations = ['archives']
-    pkg {
-        repo = "Android-ProjectTools"    //发布到Bintray的哪个仓库
-        name = "Scan-Create-QR-Zxing"    //发布到Bintray上的名字
-        desc = "A library to add tag for Scan-Create-QR-zxing."    //项目描述
-        websiteUrl = siteUrl
-        vcsUrl = gitUrl
-        issueTrackerUrl = issueUrl
-        licenses = ["Apache-2.0"]
-        labels = ['android']    //标签
-        publish = true
-        publicDownloadNumbers = true
     }
 }

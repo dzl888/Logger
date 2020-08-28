@@ -9,9 +9,6 @@ buildscript {
         classpath "com.android.tools.build:gradle:4.0.1"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0"  // 用于上传库到jcenter
-        classpath "com.github.dcendents:android-maven-gradle-plugin:1.5"  // 用于上传库到jcenter
-
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -21,6 +18,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url 'http://192.168.1.251:8081/content/repositories/android_repositories/'}
     }
 }
 
