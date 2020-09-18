@@ -8,7 +8,7 @@ android {
     buildToolsVersion "30.0.1"
 
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -48,7 +48,7 @@ uploadArchives {
         mavenDeployer {
             pom.groupId = "cn.dazhou.android.log"
             pom.artifactId = "timber"
-            pom.version = "0.0.3"
+            pom.version = "0.1.2"
             repository(url: "http://192.168.1.251:8081/content/repositories/android_repositories/") {
                 authentication(userName: "dazhou", password: "dazhou")
             }

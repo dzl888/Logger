@@ -5,11 +5,13 @@ package com.evendai.loglibrary
 import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Build
+import android.os.Environment
 import android.text.format.DateFormat
 import android.util.Base64
 import android.util.Log
 import androidx.preference.PreferenceManager
 import org.jetbrains.annotations.NonNls
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.PrintWriter
 import java.io.StringWriter
@@ -311,6 +313,7 @@ class Timber private constructor() {
         private var mToday: CharSequence? = null
         /** 用于控制是否显示Log */
         private var showLog = false
+        private var debuggable = false
 
         /** 使用AES进行加密，加密后的数据使用Base64编码为String */
         fun encrypt(rawData: String): String = Base64.encodeToString(getCipher(Cipher.ENCRYPT_MODE).doFinal(rawData.toByteArray()), Base64.NO_WRAP)
@@ -324,9 +327,11 @@ class Timber private constructor() {
         /**
          * 初始化LogTree, 在使用此对象之前，必须先调用init(context)函数，建议在Application中进行调用
          * @param context 用于获取保存配置的对象（SharedPreferences）
+         * @param debuggable 是否是可调试的，建议传BuildConfig.DEBUG
          */
-        fun init(context: Application) {
+        fun init(context: Application, debuggable: Boolean) {
             this.context = context
+            this.debuggable = debuggable
         }
 
         /** 设置是否显示Log，并持久化该参数，且只有当天有效，第二天自动变成不显示Log */
@@ -349,7 +354,9 @@ class Timber private constructor() {
         fun logToggle() = setLogSwitch(!showLog)
 
         /** 根据log级别判断是否输出log, error级别的log总是要显示的, 其他级别的Log是否输出要取决于设置的log开关 */
-        override fun isLoggable(tag: String, priority: Int) = if (BuildConfig.DEBUG || priority == Log.ERROR) true else getLogSwitch()
+        override fun isLoggable(tag: String, priority: Int) : Boolean {
+            return if (debuggable || priority == Log.ERROR) true else getLogSwitch()
+        }
 
         /** 获取今天 */
         private fun getToday() = DateFormat.format("yyyy-MM-dd", Date())
@@ -371,7 +378,7 @@ class Timber private constructor() {
         private const val WRITE_FILE_FLAG = "--file--"
 
         /** logback，用于把日志写到文件中 */
-        private val logback = LoggerFactory.getLogger(Timber::class.java)
+        private lateinit var logback: Logger
 
         /** 记录一个使用可选格式args的verbose消息。  */
         fun v(@NonNls message: String, vararg args: Any) {
@@ -603,10 +610,14 @@ class Timber private constructor() {
         /**
          * 植入一棵默认的Tree。在使用Timer记录日志之前，必须先植入一棵树。也可调用[Timber.plant]来植入其它的树
          * @param context 用于获取保存配置的对象（SharedPreferences）
+         * @param debuggable 是否是可调试的，建议传BuildConfig.DEBUG，这样在Debug模式会输入log，打包后不输出log
          */
-        fun init(context: Application) {
+        fun init(context: Application, debuggable: Boolean) {
+            // Environment.DIRECTORY_DOCUMENTS此变量在API19才有
+            context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+            logback = LoggerFactory.getLogger(Timber::class.java)
             defaultTree = DefaultTree()
-            defaultTree!!.init(context)
+            defaultTree!!.init(context, debuggable)
             plant(defaultTree!!)
         }
 
@@ -670,11 +681,11 @@ class Timber private constructor() {
         /** 灵魂之树，此Tree对象将会把工作委派给种植在[Timber.FOREST][Timber.FOREST]中的所有的[Tree] */
         private val TREE_OF_SOULS: Tree = object : Tree() {
             override fun v(message: String, vararg args: Any) {
-                forestAsArray.forEach { it.v(message, args) }
+                forestAsArray.forEach { it.v(message, *args) }
             }
 
             override fun v(t: Throwable, message: String, vararg args: Any) {
-                forestAsArray.forEach { it.v(t, message, args) }
+                forestAsArray.forEach { it.v(t, message, *args) }
             }
 
             override fun v(t: Throwable) {
@@ -682,11 +693,11 @@ class Timber private constructor() {
             }
 
             override fun d(message: String, vararg args: Any) {
-                forestAsArray.forEach { it.d(message, args) }
+                forestAsArray.forEach { it.d(message, *args) }
             }
 
             override fun d(t: Throwable, message: String, vararg args: Any) {
-                forestAsArray.forEach { it.d(t, message, args) }
+                forestAsArray.forEach { it.d(t, message, *args) }
             }
 
             override fun d(t: Throwable) {
@@ -694,11 +705,11 @@ class Timber private constructor() {
             }
 
             override fun i(message: String, vararg args: Any) {
-                forestAsArray.forEach { it.i(message, args) }
+                forestAsArray.forEach { it.i(message, *args) }
             }
 
             override fun i(t: Throwable, message: String, vararg args: Any) {
-                forestAsArray.forEach { it.i(t, message, args) }
+                forestAsArray.forEach { it.i(t, message, *args) }
             }
 
             override fun i(t: Throwable) {
@@ -706,11 +717,11 @@ class Timber private constructor() {
             }
 
             override fun w(message: String, vararg args: Any) {
-                forestAsArray.forEach { it.w(message, args) }
+                forestAsArray.forEach { it.w(message, *args) }
             }
 
             override fun w(t: Throwable, message: String, vararg args: Any) {
-                forestAsArray.forEach { it.w(t, message, args) }
+                forestAsArray.forEach { it.w(t, message, *args) }
             }
 
             override fun w(t: Throwable) {
@@ -718,11 +729,11 @@ class Timber private constructor() {
             }
 
             override fun e(message: String, vararg args: Any) {
-                forestAsArray.forEach { it.e(message, args) }
+                forestAsArray.forEach { it.e(message, *args) }
             }
 
             override fun e(t: Throwable, message: String, vararg args: Any) {
-                forestAsArray.forEach { it.e(t, message, args) }
+                forestAsArray.forEach { it.e(t, message, *args) }
             }
 
             override fun e(t: Throwable) {
@@ -730,11 +741,11 @@ class Timber private constructor() {
             }
 
             override fun wtf(message: String, vararg args: Any) {
-                forestAsArray.forEach { it.wtf(message, args) }
+                forestAsArray.forEach { it.wtf(message, *args) }
             }
 
             override fun wtf(t: Throwable, message: String, vararg args: Any) {
-                forestAsArray.forEach { it.wtf(t, message, args) }
+                forestAsArray.forEach { it.wtf(t, message, *args) }
             }
 
             override fun wtf(t: Throwable) {
