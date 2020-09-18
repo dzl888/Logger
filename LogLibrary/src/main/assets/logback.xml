@@ -41,9 +41,9 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 按天轮转 -->
             <fileNamePattern>${EXT_DIR}/Android/data/${PACKAGE_NAME}/files/Documents/logs/log_%d{yyyy_MM_dd}.txt</fileNamePattern>
-            <!-- 保存 7 天的历史记录(7天后会删除最老的日志文件)，最大大小为 300M -->
-            <maxHistory>7</maxHistory>
-            <totalSizeCap>300MB</totalSizeCap>
+            <!-- 保存 30 天的历史记录(30天后会删除最老的日志文件)，最大大小为 600M -->
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>600MB</totalSizeCap>
         </rollingPolicy>
 
         <encoder>
@@ -68,8 +68,8 @@
         <file>${EXT_DIR}/Android/data/${PACKAGE_NAME}/files/Documents/bugs/bug.txt</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${EXT_DIR}/Android/data/${PACKAGE_NAME}/files/Documents/bugs/bug_%d{yyyy_MM_dd}.txt</fileNamePattern>
-            <maxHistory>7</maxHistory>
-            <totalSizeCap>300MB</totalSizeCap>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>600MB</totalSizeCap>
         </rollingPolicy>
 
         <encoder>
