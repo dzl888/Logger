@@ -81,12 +81,29 @@
 
 # 二、使用示例
 
+## 1、初始化，以及保存未捕捉异常
+
+```kotlin
+class App: Application() {
+
+    override fun onCreate() {
+        super.onCreate()
+        Timber.init(this, BuildConfig.DEBUG)
+        Thread.setDefaultUncaughtExceptionHandler { t, e ->
+            Timber.fe(e, "未捕捉的异常")
+        }
+    }
+    
+}
+```
+
+## 2、基本使用
+
 ```kotLin
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Timber.init(application, BuildConfig.DEBUG)
     }
 
     fun printLog(view: View) {
