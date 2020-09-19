@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'maven'
 
 android {
@@ -8,7 +7,7 @@ android {
     buildToolsVersion "30.0.1"
 
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 15
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -31,15 +30,9 @@ android {
 }
 
 dependencies {
-    api fileTree(dir: "libs", include: ["*.jar"])
-    api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-
-    // Logback 功能很强大的日志库
-    api 'org.slf4j:slf4j-api:1.7.30' // 官方用的是1.7.25，不知道使用最新版本（1.7.30）会不会有问题
-    api 'com.github.tony19:logback-android:2.0.0'
-
-    // 用于保存配置文件
-    api 'androidx.preference:preference:1.1.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'org.slf4j:slf4j-api:1.7.30' // 官方用的是1.7.25，不知道使用最新版本（1.7.30）会不会有问题
+    implementation 'com.github.tony19:logback-android:2.0.0'
 }
 
 //配置远程maven仓库
@@ -48,7 +41,7 @@ uploadArchives {
         mavenDeployer {
             pom.groupId = "cn.dazhou.android.log"
             pom.artifactId = "timber"
-            pom.version = "0.1.2"
+            pom.version = "1.0.3"
             repository(url: "http://192.168.1.251:8081/content/repositories/android_repositories/") {
                 authentication(userName: "dazhou", password: "dazhou")
             }

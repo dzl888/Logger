@@ -1,15 +1,14 @@
-@file:Suppress("unused", "MemberVisibilityCanBePrivate")
+@file:Suppress("unused", "MemberVisibilityCanBePrivate", "DEPRECATION")
 
 package com.evendai.loglibrary
 
 import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Build
-import android.os.Environment
+import android.preference.PreferenceManager
 import android.text.format.DateFormat
 import android.util.Base64
 import android.util.Log
-import androidx.preference.PreferenceManager
 import org.jetbrains.annotations.NonNls
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -262,6 +261,11 @@ class Timber private constructor() {
                     }
                 }
             }
+
+            if (!isLoggable(tag, priority)) {
+                return
+            }
+
             if (msg.length < MAX_LOG_LENGTH) {
                 if (priority == Log.ASSERT) {
                     Log.wtf(tag, msg)
@@ -613,8 +617,7 @@ class Timber private constructor() {
          * @param debuggable 是否是可调试的，建议传BuildConfig.DEBUG，这样在Debug模式会输入log，打包后不输出log
          */
         fun init(context: Application, debuggable: Boolean) {
-            // Environment.DIRECTORY_DOCUMENTS此变量在API19才有
-            context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+            context.getExternalFilesDir(null) // 此方法会自动创建外部存储的应用目录，只能通过此函数调用自动创建，不能手动创建
             logback = LoggerFactory.getLogger(Timber::class.java)
             defaultTree = DefaultTree()
             defaultTree!!.init(context, debuggable)
