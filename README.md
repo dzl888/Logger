@@ -88,7 +88,7 @@ class App: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Timber.init(this, BuildConfig.DEBUG)
+        Timber.init(this, BuildConfig.DEBUG) // 注意,这里的BuildConfig要使用自己应用包名下的,不能用其他包名下的
         Thread.setDefaultUncaughtExceptionHandler { t, e ->
             Timber.fe(e, "未捕捉的异常")
         }
