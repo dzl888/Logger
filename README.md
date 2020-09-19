@@ -145,7 +145,7 @@ class MainActivity : AppCompatActivity() {
    }
    
    dependencies {
-       implementation 'cn.dazhou.android.log:timber:1.0.3'
+       implementation 'cn.dazhou.android.log:timber:1.0.4'
    }
    ```
    

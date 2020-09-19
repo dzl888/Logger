@@ -617,11 +617,13 @@ class Timber private constructor() {
          * @param debuggable 是否是可调试的，建议传BuildConfig.DEBUG，这样在Debug模式会输入log，打包后不输出log
          */
         fun init(context: Application, debuggable: Boolean) {
-            context.getExternalFilesDir(null) // 此方法会自动创建外部存储的应用目录，只能通过此函数调用自动创建，不能手动创建
-            logback = LoggerFactory.getLogger(Timber::class.java)
-            defaultTree = DefaultTree()
-            defaultTree!!.init(context, debuggable)
-            plant(defaultTree!!)
+            if (defaultTree == null) {
+                context.getExternalFilesDir(null) // 此方法会自动创建外部存储的应用目录，只能通过此函数调用自动创建，不能手动创建
+                logback = LoggerFactory.getLogger(Timber::class.java)
+                defaultTree = DefaultTree()
+                defaultTree!!.init(context, debuggable)
+                plant(defaultTree!!)
+            }
         }
 
         /** 添加一个新的日志树。  */
