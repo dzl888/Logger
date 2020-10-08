@@ -88,7 +88,7 @@ class App: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Timber.init(this, BuildConfig.DEBUG) // 注意,这里的BuildConfig要使用自己应用包名下的,不能用其他包名下的
+        Timber.init(this, BuildConfig::class.java) // 注意,这里的BuildConfig要使用自己应用包名下的,不能用其他包名下的
         Thread.setDefaultUncaughtExceptionHandler { t, e ->
             Timber.fe(e, "未捕捉的异常")
         }
@@ -145,14 +145,14 @@ class MainActivity : AppCompatActivity() {
    }
    
    dependencies {
-       implementation 'cn.dazhou.android.log:timber:2.0.3'
+       implementation 'cn.dazhou.android.log:timber:2.0.5'
    }
    ```
    
 3. 初始化Timber
 
    ```kotlin
-   Timber.init(application, BuildConfig.DEBUG) // 建议在Application中初始化. 注意,这里的BuildConfig要使用自己应用包名下的,不能用其他包名下的
+   Timber.init(application, BuildConfig::class.java) // 建议在Application中初始化. 注意,这里的BuildConfig要使用自己应用包名下的,不能用其他包名下的
    ```
 
 ## 2、使用导入aar文件到libs目录的方式
@@ -167,5 +167,5 @@ class MainActivity : AppCompatActivity() {
 2. 初始化Timber
 
    ```kotlin
-   Timber.init(application, BuildConfig.DEBUG) // 建议在Application中初始化. 注意,这里的BuildConfig要使用自己应用包名下的,不能用其他包名下的
+   Timber.init(application, BuildConfig::class.java) // 建议在Application中初始化. 注意,这里的BuildConfig要使用自己应用包名下的,不能用其他包名下的
    ```

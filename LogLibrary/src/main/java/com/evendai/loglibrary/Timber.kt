@@ -614,9 +614,17 @@ class Timber private constructor() {
         /**
          * 植入一棵默认的Tree。在使用Timer记录日志之前，必须先植入一棵树。也可调用[Timber.plant]来植入其它的树
          * @param context 用于获取保存配置的对象（SharedPreferences）
-         * @param debuggable 是否是可调试的，建议传BuildConfig.DEBUG，这样在Debug模式会输入log，打包后不输出log
+         * @param buildConfigClass 传入自己项目中的BuildConfig类，Timber会根据BuildConfig.DEBUG来决定是否显示日志
          */
-        fun init(context: Application, debuggable: Boolean) {
+        fun init(context: Application, buildConfigClass: Class<*>) {
+            if (buildConfigClass.simpleName != "BuildConfig") {
+                error("非法参数，请传入自己项目中的BuildConfig类")
+            }
+            if (buildConfigClass.`package` == Timber::class.java.`package`) {
+                error("不能使用日志库中的BuildConfig类（${BuildConfig::class.java.name}），请使用自己项目中的BuildConfig类")
+            }
+            val field = buildConfigClass.getField("DEBUG")
+            val debuggable: Boolean = field.getBoolean(null)
             if (defaultTree == null) {
                 context.getExternalFilesDir(null) // 此方法会自动创建外部存储的应用目录，只能通过此函数调用自动创建，不能手动创建
                 logback = LoggerFactory.getLogger(Timber::class.java)

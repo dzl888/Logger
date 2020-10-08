@@ -9,7 +9,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Timber.init(application, BuildConfig.DEBUG) // 建议在Application中进行调用
+        Timber.init(application, BuildConfig::class.java) // 建议在Application中进行调用
     }
 
     fun printLog(view: View) {
