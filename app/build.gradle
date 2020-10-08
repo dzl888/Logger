@@ -7,7 +7,7 @@ android {
     buildToolsVersion "30.0.1"
 
     defaultConfig {
-        applicationId "com.evendai.logger"
+        applicationId "aaa.aaa.logger"
         minSdkVersion 15
         targetSdkVersion 30
         versionCode 1
@@ -33,6 +33,6 @@ dependencies {
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    implementation 'cn.dazhou.android.log:timber:1.0.5'
+    implementation 'cn.dazhou.android.log:timber:2.0.0'
 
 }

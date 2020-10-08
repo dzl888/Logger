@@ -39,8 +39,8 @@
         <!--好像写数据到/sdcard/Android/data/应用包名目录下是不需要权限，但是实验证明需要写外部存储权限才可以-->
         <file>${EXT_DIR}/Android/data/${PACKAGE_NAME}/files/Documents/logs/log.txt</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- 按天轮转 -->
-            <fileNamePattern>${EXT_DIR}/Android/data/${PACKAGE_NAME}/files/Documents/logs/log_%d{yyyy_MM_dd}.txt</fileNamePattern>
+            <!-- 按天轮转，注：默认是使用UTC时间来轮转的，中国的时区要比它慢8小时，所以在中国时区的0点的时候并不会轮转，因为此时UTC时间为16:00，所以下面指定了上海时区 -->
+            <fileNamePattern>${EXT_DIR}/Android/data/${PACKAGE_NAME}/files/Documents/logs/log_%d{yyyy_MM_dd, Asia/Shanghai}.txt</fileNamePattern>
             <!-- 保存 30 天的历史记录(30天后会删除最老的日志文件)，最大大小为 600M -->
             <maxHistory>30</maxHistory>
             <totalSizeCap>600MB</totalSizeCap>
@@ -67,7 +67,7 @@
 
         <file>${EXT_DIR}/Android/data/${PACKAGE_NAME}/files/Documents/bugs/bug.txt</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${EXT_DIR}/Android/data/${PACKAGE_NAME}/files/Documents/bugs/bug_%d{yyyy_MM_dd}.txt</fileNamePattern>
+            <fileNamePattern>${EXT_DIR}/Android/data/${PACKAGE_NAME}/files/Documents/bugs/bug_%d{yyyy_MM_dd, Asia/Shanghai}.txt</fileNamePattern>
             <maxHistory>30</maxHistory>
             <totalSizeCap>600MB</totalSizeCap>
         </rollingPolicy>
