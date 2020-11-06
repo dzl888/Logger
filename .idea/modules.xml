@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Logger.iml" filepath="$PROJECT_DIR$/.idea/modules/Logger.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/LogLibrary/Logger.LogLibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/LogLibrary/Logger.LogLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Logger.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Logger.app.iml" />
+    </modules>
+  </component>
+</project>
