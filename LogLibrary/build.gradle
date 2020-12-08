@@ -45,7 +45,7 @@ uploadArchives {
 
             pom.groupId = "cn.dazhou.android.log"
             pom.artifactId = "timber"
-            pom.version = "2.0.5"
+            pom.version = "2.0.6"
             repository(url: "http://192.168.1.251:8081/content/repositories/android_repositories/") {
                 authentication(userName: properties.getProperty('userName'), password: properties.getProperty('password'))
             }
