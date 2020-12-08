@@ -252,11 +252,12 @@ class Timber private constructor() {
                     Log.WARN -> logback.warn(msgForLogback)
                     Log.ERROR -> {
                         if (t != null) {
-                            logback.warn("发生了异常： ${t.javaClass.name}(${t.message})")
-                            logback.error(msgForLogback) // 有异常对象时，error级别的日志会单独保存在一个Bug文件中。
+                            logback.warn("$tag：发生了异常： ${t.javaClass.name}(${t.message})")
+                            logback.error(msgForLogback) // error级别的日志会单独保存在一个Bug文件中。
                             //logger.error(msgForLogback, t); // Timber对象已经把异常数据都封装到message对象中了，所以不需要用这个方法
                         } else {
                             logback.warn(msgForLogback)
+                            logback.error(msgForLogback) // error级别的日志会单独保存在一个Bug文件中。
                         }
                     }
                 }
