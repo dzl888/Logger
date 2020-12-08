@@ -122,6 +122,7 @@ class MainActivity : AppCompatActivity() {
 
         // 同时输出日志到控制台和文件
         Timber.fi("Hello")
+        Timber.fe("我是error异常，会写到bug文件中")
         Timber.fe(Exception("惨了"))
         Timber.fe(Exception("又出异常了"), "不慌，没事")
 
@@ -145,7 +146,7 @@ class MainActivity : AppCompatActivity() {
    }
    
    dependencies {
-       implementation 'cn.dazhou.android.log:timber:2.0.7'
+       implementation 'cn.dazhou.android.log:timber:2.0.8'
    }
    ```
    
@@ -169,3 +170,7 @@ class MainActivity : AppCompatActivity() {
    ```kotlin
    Timber.init(application, BuildConfig::class.java) // 建议在Application中初始化. 注意,这里的BuildConfig要使用自己应用包名下的,不能用其他包名下的
    ```
+
+# 四、Bug
+
+此日志框架有一个Bug，就是当天的日志命名是不带日期的，到了第二天才会加上日期，比如文件为bug.txt，这代表是当天的bug文件，第二天如果出现一个新的bug，则bug.txt会被保存为bug_2020_12_08.txt，然后创建一个新的bug.txt保存当天的bug，以此类推。这样的话就会有一个问题，如果第二天不出现bug了，则bug.txt中保存的bug实际为第一天保存的，所以我们没办法区分bug.txt中的bug具体是哪一天的了！！现在的一个解决方案就是在每一个日志输出的时候都带上日期，这样在打开bug.txt看里面的日志时，就能看到日志是什么哪个日期产生的。

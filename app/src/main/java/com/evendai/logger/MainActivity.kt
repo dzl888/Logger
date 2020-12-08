@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         // 输出日志到控制台和文件
         Timber.fi("Hello")
+        Timber.fe("我是error异常，会写到bug文件中")
         Timber.fe(Exception("惨了"))
         Timber.fe(Exception("又出异常了"), "不慌，没事")
 
