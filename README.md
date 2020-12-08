@@ -57,7 +57,7 @@
 4. 在高版本的Android系统中, 虽然在Locat控制台中看不到release版本的应用的进程(模拟器上高版本也能看到进程, 可能是有root权限),但是log还是可以正常输出的, 我们可以直接使用TAG进行过滤日志 , release版本时,日志开关默认是关的, 可通过如下方法打开
 
     ```kotlin
-    Timber.setLogSwitch(true)   // 设置日志开关为开状态（当天有效，第二天自动变成关）
+    Timber.setLogSwitch(true)   // 设置日志开关为开状态（当天有效，第二天自动变成关），注：如果是运行的是Debug版本，则即使这里设置为false，log也会输出
     Timber.getLogSwitch()       // 获取当前日志开关状态
     Timber.logToggle()          // 切换日志开关，开变成关，关变成开（当天有效，第二天自动变成关）
     ```
@@ -145,7 +145,7 @@ class MainActivity : AppCompatActivity() {
    }
    
    dependencies {
-       implementation 'cn.dazhou.android.log:timber:2.0.5'
+       implementation 'cn.dazhou.android.log:timber:2.0.7'
    }
    ```
    
