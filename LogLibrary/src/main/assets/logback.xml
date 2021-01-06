@@ -1,15 +1,15 @@
 <configuration>
 
-<!--    <timestamp key="date" datePattern="yyyy_MM_dd" />
+    <!--    <timestamp key="date" datePattern="yyyy_MM_dd" />
 
-    <appender name="logcat" class="ch.qos.logback.classic.android.LogcatAppender">
-        <tagEncoder>
-            <pattern>%logger{12}</pattern>
-        </tagEncoder>
-        <encoder>
-            <pattern>[%-20thread] %msg</pattern>
-        </encoder>
-    </appender>-->
+        <appender name="logcat" class="ch.qos.logback.classic.android.LogcatAppender">
+            <tagEncoder>
+                <pattern>%logger{12}</pattern>
+            </tagEncoder>
+            <encoder>
+                <pattern>[%-20thread] %msg</pattern>
+            </encoder>
+        </appender>-->
 
     <!--<appender name="file" class="ch.qos.logback.core.FileAppender">
         <file>/data/data/com.even.app.logbackdemo/files/log/log_${date}.txt</file>
@@ -40,7 +40,10 @@
         <file>${EXT_DIR}/Android/data/${PACKAGE_NAME}/files/Documents/logs/log.txt</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 按天轮转，注：默认是使用UTC时间来轮转的，中国的时区要比它慢8小时，所以在中国时区的0点的时候并不会轮转，因为此时UTC时间为16:00，所以下面指定了上海时区 -->
-            <fileNamePattern>${EXT_DIR}/Android/data/${PACKAGE_NAME}/files/Documents/logs/log_%d{yyyy_MM_dd, Asia/Shanghai}.txt</fileNamePattern>
+            <fileNamePattern>
+                ${EXT_DIR}/Android/data/${PACKAGE_NAME}/files/Documents/logs/log_%d{yyyy_MM_dd,
+                Asia/Shanghai}.txt
+            </fileNamePattern>
             <!-- 保存 30 天的历史记录(30天后会删除最老的日志文件)，最大大小为 600M -->
             <maxHistory>30</maxHistory>
             <totalSizeCap>600MB</totalSizeCap>
@@ -67,7 +70,10 @@
 
         <file>${EXT_DIR}/Android/data/${PACKAGE_NAME}/files/Documents/bugs/bug.txt</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${EXT_DIR}/Android/data/${PACKAGE_NAME}/files/Documents/bugs/bug_%d{yyyy_MM_dd, Asia/Shanghai}.txt</fileNamePattern>
+            <fileNamePattern>
+                ${EXT_DIR}/Android/data/${PACKAGE_NAME}/files/Documents/bugs/bug_%d{yyyy_MM_dd,
+                Asia/Shanghai}.txt
+            </fileNamePattern>
             <maxHistory>30</maxHistory>
             <totalSizeCap>600MB</totalSizeCap>
         </rollingPolicy>
@@ -77,10 +83,72 @@
         </encoder>
     </appender>
 
+
+    <!-- 配置日志输出到Graylog服务 -->
+    <!--    <appender name="GELF" class="de.siegmar.logbackgelf.GelfTcpAppender">-->
+    <!--    <appender name="GELF" class="com.evendai.loglibrary.logbackgelf.GelfTcpAppender">-->
+    <!--        &lt;!&ndash; 配置Graylog服务的地址 &ndash;&gt;-->
+    <!--        <graylogHost>192.168.1.214</graylogHost>-->
+    <!--        &lt;!&ndash; Input端口 &ndash;&gt;-->
+    <!--        <graylogPort>12201</graylogPort>-->
+
+    <!--        &lt;!&ndash;        <encoder class="de.siegmar.logbackgelf.GelfEncoder">&ndash;&gt;-->
+    <!--        <encoder class="com.evendai.loglibrary.logbackgelf.GelfEncoder">-->
+    <!--            &lt;!&ndash; 原始主机名 - 如果没有指定将自动检测 &ndash;&gt;-->
+    <!--            <originHost></originHost>-->
+    <!--            &lt;!&ndash; 是否发送原生的日志信息，默认 false &ndash;&gt;-->
+    <!--            <includeRawMessage>false</includeRawMessage>-->
+    <!--            &lt;!&ndash; 是否发送回送标记，默认 true &ndash;&gt;-->
+    <!--            <includeMarker>true</includeMarker>-->
+    <!--            &lt;!&ndash; 是否发送 mdc 键/值，默认 true &ndash;&gt;-->
+    <!--            <includeMdcData>true</includeMdcData>-->
+    <!--            &lt;!&ndash; 是否发送调用方数据（源文件、方法、类名和行），默认 false &ndash;&gt;-->
+    <!--            <includeCallerData>false</includeCallerData>-->
+    <!--            &lt;!&ndash;  If true, root cause exception of the exception passed with the log message will be exposed in the root_cause_class_name and root_cause_message fields. Default: false. &ndash;&gt;-->
+    <!--            <includeRootCauseData>false</includeRootCauseData>-->
+    <!--            &lt;!&ndash; 是否发送日志级别的名称，否则默认以数字代表日志级别，默认 false &ndash;&gt;-->
+    <!--            <includeLevelName>true</includeLevelName>-->
+    <!--            &lt;!&ndash; 短消息格式。默认 "%m%nopex" &ndash;&gt;-->
+    <!--            <shortPatternLayout class="ch.qos.logback.classic.PatternLayout">-->
+    <!--                <pattern>%m%nopex</pattern>-->
+    <!--            </shortPatternLayout>-->
+    <!--            &lt;!&ndash; 完整的消息格式（Stacktrace）。默认 "%m%n" &ndash;&gt;-->
+    <!--            <fullPatternLayout class="ch.qos.logback.classic.PatternLayout">-->
+    <!--                <pattern>%d - [%thread] %-5level %logger{35} - %msg%n</pattern>-->
+    <!--            </fullPatternLayout>-->
+    <!--            &lt;!&ndash; 要发送到 graylog 的其他静态字段 &ndash;&gt;-->
+    <!--            &lt;!&ndash; 配置应用名称（服务名称），通过staticField标签可以自定义一些固定的日志字段 &ndash;&gt;-->
+    <!--            <staticField>_app_name:sipservice</staticField>-->
+    <!--            <staticField>os_arch:${os.arch}</staticField>-->
+    <!--            <staticField>os_name:${os.name}</staticField>-->
+    <!--            <staticField>os_version:${os.version}</staticField>-->
+    <!--        </encoder>-->
+    <!--    </appender>-->
+
+    <!--    &lt;!&ndash; Use AsyncAppender to prevent slowdowns &ndash;&gt;-->
+    <!--    <appender name="ASYNC_GELF" class="ch.qos.logback.classic.AsyncAppender">-->
+    <!--        <appender-ref ref="GELF" />-->
+    <!--    </appender>-->
+
+
+    <appender name="PAPERTRAIL" class="ch.qos.logback.classic.net.SyslogAppender">
+        <suffixPattern>OKOK Good! ${EXT_DIR} %-5level %logger{35}: %m%n%xEx</suffixPattern>
+        <syslogHost>192.168.1.214</syslogHost>
+        <port>1514</port>
+        <facility>USER</facility>
+        <lazy>true</lazy>
+    </appender>
+
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="PAPERTRAIL" />
+    </appender>
+
+
     <root level="trace">
         <!--<appender-ref ref="logcat" />-->
-        <appender-ref ref="FILE_LOG"/>
-        <appender-ref ref="FILE_BUG"/>
+        <appender-ref ref="FILE_LOG" />
+        <appender-ref ref="FILE_BUG" />
+        <appender-ref ref="ASYNC" />
     </root>
 
 </configuration>

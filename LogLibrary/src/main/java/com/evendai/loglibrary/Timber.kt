@@ -5,10 +5,13 @@ package com.evendai.loglibrary
 import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Build
+import android.os.Environment
 import android.preference.PreferenceManager
 import android.text.format.DateFormat
 import android.util.Base64
 import android.util.Log
+import ch.qos.logback.classic.encoder.PatternLayoutEncoder
+import com.evendai.loglibrary.TimberConfig.configureLogbackByString
 import org.jetbrains.annotations.NonNls
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -627,7 +630,12 @@ class Timber private constructor() {
             val field = buildConfigClass.getField("DEBUG")
             val debuggable: Boolean = field.getBoolean(null)
             if (defaultTree == null) {
+                //动态加载配置文件
+                configureLogbackByString()
+
                 context.getExternalFilesDir(null) // 此方法会自动创建外部存储的应用目录，只能通过此函数调用自动创建，不能手动创建
+                val path = Environment.getExternalStorageDirectory()
+                Log.e("TAG",path.absolutePath)
                 logback = LoggerFactory.getLogger(Timber::class.java)
                 defaultTree = DefaultTree()
                 defaultTree!!.init(context, debuggable)
